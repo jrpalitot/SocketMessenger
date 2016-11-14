@@ -6,6 +6,7 @@
 package socketteste;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.text.SimpleDateFormat;
@@ -33,17 +34,24 @@ public class SocketTeste extends Thread{
         System.out.println("--------------------------------");
         
         
-        if (opcao.equals("1")){
-            System.out.println("Qual IP da sala que deseja conectar?");
-            opcao = enviar_mensagem.nextLine();
-            Socket socket = new Socket(opcao, 6500);
-        }else if (opcao.equals("2")){
-            System.out.println("Criando sala... \nSala criada! \n\n-----------------------");
-            ServerSocket serverSocket = new ServerSocket(6500);
-            Socket socket = serverSocket.accept();
-        }else{
-            System.out.println("Opção inválida..");
-            System.exit(0);
+        switch (opcao) {
+            case "1":
+                {
+                    System.out.println("Qual IP da sala que deseja conectar?");
+                    mensagem = enviar_mensagem.nextLine();
+                    Socket socket = new Socket(InetAddress.getByName(mensagem), 6500);
+                    break;
+                }
+            case "2":
+                {
+                    System.out.println("Criando sala... \nSala criada! \n\n-----------------------");
+                    ServerSocket serverSocket = new ServerSocket(6500);
+                    Socket socket = serverSocket.accept();
+                    break;
+                }
+            default:
+                System.out.println("Opção inválida..");
+                System.exit(0);
         }
         ThreadLe tLe = new ThreadLe(socket.getInputStream());
         tLe.start();
