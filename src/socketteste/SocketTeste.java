@@ -25,6 +25,7 @@ public class SocketTeste extends Thread{
         String nome;
         String opcao;
         String mensagem;
+        DataOutputStream dataOutputStream;
         
         System.out.println("Qual seu nome? ");
         nome = enviar_mensagem.nextLine();
@@ -40,32 +41,48 @@ public class SocketTeste extends Thread{
                     System.out.println("Qual IP da sala que deseja conectar?");
                     mensagem = enviar_mensagem.nextLine();
                     Socket socket = new Socket(InetAddress.getByName(mensagem), 6500);
-                    break;
+                    ThreadLe tLe = new ThreadLe(socket.getInputStream());
+                    tLe.start();
+                    dataOutputStream = new DataOutputStream(socket.getOutputStream());
+                    
+                    do{
+                        mensagem = enviar_mensagem.nextLine();
+                        sdf = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
+                        if (mensagem.startsWith("@>")){
+                            dataOutputStream.writeUTF(">> ["+nome+"] às "+sdf+" : "+ mensagem);
+                        }else{
+                            dataOutputStream.writeUTF("["+nome+"] às "+sdf+" : "+ mensagem);
+                        }
+                    } while(true);
+                    
+//                    break;
                 }
             case "2":
                 {
                     System.out.println("Criando sala... \nSala criada! \n\n-----------------------");
                     ServerSocket serverSocket = new ServerSocket(6500);
                     Socket socket = serverSocket.accept();
-                    break;
+                    ThreadLe tLe = new ThreadLe(socket.getInputStream());
+                    tLe.start();
+                    dataOutputStream = new DataOutputStream(socket.getOutputStream());
+                    
+                    do{
+                        mensagem = enviar_mensagem.nextLine();
+                        sdf = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
+                        if (mensagem.startsWith("@>")){
+                            dataOutputStream.writeUTF(">> ["+nome+"] às "+sdf+" : "+ mensagem);
+                        }else{
+                            dataOutputStream.writeUTF("["+nome+"] às "+sdf+" : "+ mensagem);
+                        }
+                    } while(true);
+                    
+//                    break;
                 }
             default:
                 System.out.println("Opção inválida..");
                 System.exit(0);
         }
-        ThreadLe tLe = new ThreadLe(socket.getInputStream());
-        tLe.start();
-        DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
         
-        do{
-            mensagem = enviar_mensagem.nextLine();
-            sdf = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
-            if (mensagem.startsWith("@>")){
-                dataOutputStream.writeUTF(">> ["+nome+"] às "+sdf+" : "+ mensagem);
-            }else{
-                dataOutputStream.writeUTF("["+nome+"] às "+sdf+" : "+ mensagem);
-            }
-        } while(true);
     }
     
     
