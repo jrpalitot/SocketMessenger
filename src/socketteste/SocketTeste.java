@@ -10,6 +10,7 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Locale;
 import java.util.Scanner;
 
@@ -26,6 +27,7 @@ public class SocketTeste extends Thread{
         String opcao;
         String mensagem;
         DataOutputStream dataOutputStream;
+        Calendar data_atual;
         
         System.out.println("Qual seu nome? ");
         nome = enviar_mensagem.nextLine();
@@ -45,13 +47,14 @@ public class SocketTeste extends Thread{
                     tLe.start();
                     dataOutputStream = new DataOutputStream(socket.getOutputStream());
                     
-                    do{
+                   do{
+                        data_atual = Calendar.getInstance();
                         mensagem = enviar_mensagem.nextLine();
                         sdf = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
                         if (mensagem.startsWith("@>")){
-                            dataOutputStream.writeUTF(">> ["+nome+"] às "+sdf+" : "+ mensagem);
+                            dataOutputStream.writeUTF(">> ["+nome+"] às "+sdf.format(data_atual.getTime())+" : "+ mensagem);
                         }else{
-                            dataOutputStream.writeUTF("["+nome+"] às "+sdf+" : "+ mensagem);
+                            dataOutputStream.writeUTF("["+nome+"] às "+sdf.format(data_atual.getTime())+" : "+ mensagem);
                         }
                     } while(true);
                     
@@ -65,14 +68,14 @@ public class SocketTeste extends Thread{
                     ThreadLe tLe = new ThreadLe(socket.getInputStream());
                     tLe.start();
                     dataOutputStream = new DataOutputStream(socket.getOutputStream());
-                    
                     do{
+                        data_atual = Calendar.getInstance();
                         mensagem = enviar_mensagem.nextLine();
                         sdf = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
                         if (mensagem.startsWith("@>")){
-                            dataOutputStream.writeUTF(">> ["+nome+"] às "+sdf+" : "+ mensagem);
+                            dataOutputStream.writeUTF(">> ["+nome+"] às "+sdf.format(data_atual.getTime())+" : "+ mensagem);
                         }else{
-                            dataOutputStream.writeUTF("["+nome+"] às "+sdf+" : "+ mensagem);
+                            dataOutputStream.writeUTF("["+nome+"] às "+sdf.format(data_atual.getTime())+" : "+ mensagem);
                         }
                     } while(true);
                     
