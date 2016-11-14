@@ -17,9 +17,11 @@ import java.util.logging.Logger;
  */
 public class ThreadLe extends Thread {
     private InputStream  in;
+    private String nome;
     
-    public ThreadLe(InputStream in){
+    public ThreadLe(InputStream in, String nome){
         this.in = in;
+        this.nome = nome;
     }
     @Override
     public void run(){
@@ -28,7 +30,13 @@ public class ThreadLe extends Thread {
         do{
             try {
                 msg = dIn.readUTF();
-                System.out.println(msg);
+                if (!msg.contains("@>")){
+                    System.out.println(msg);
+                }else{
+                    if(msg.contains("@>"+nome)){
+                        System.out.println(msg);
+                    }
+                }
             } catch (IOException ex) {
                 Logger.getLogger(ThreadLe.class.getName()).log(Level.SEVERE, null, ex);
             }

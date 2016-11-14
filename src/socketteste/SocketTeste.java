@@ -20,7 +20,7 @@ import java.util.Scanner;
 public class SocketTeste extends Thread{
     
     public static void main(String[] args) throws IOException  {
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
+        SimpleDateFormat sdf;
         Scanner enviar_mensagem = new Scanner (System.in);
         String nome;
         String opcao;
@@ -41,7 +41,7 @@ public class SocketTeste extends Thread{
                     System.out.println("Qual IP da sala que deseja conectar?");
                     mensagem = enviar_mensagem.nextLine();
                     Socket socket = new Socket(InetAddress.getByName(mensagem), 6500);
-                    ThreadLe tLe = new ThreadLe(socket.getInputStream());
+                    ThreadLe tLe = new ThreadLe(socket.getInputStream(), nome);
                     tLe.start();
                     dataOutputStream = new DataOutputStream(socket.getOutputStream());
                     
@@ -62,7 +62,7 @@ public class SocketTeste extends Thread{
                     System.out.println("Criando sala... \nSala criada! \n\n-----------------------");
                     ServerSocket serverSocket = new ServerSocket(6500);
                     Socket socket = serverSocket.accept();
-                    ThreadLe tLe = new ThreadLe(socket.getInputStream());
+                    ThreadLe tLe = new ThreadLe(socket.getInputStream(), nome);
                     tLe.start();
                     dataOutputStream = new DataOutputStream(socket.getOutputStream());
                     
