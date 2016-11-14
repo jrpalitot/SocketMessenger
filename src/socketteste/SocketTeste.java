@@ -69,7 +69,7 @@ public class SocketTeste extends Thread{
                     do{
                         mensagem = enviar_mensagem.nextLine();
                         sdf = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
-                        if (mensagem.startsWith("@>")){
+                        if (mensagem.contains("@>")){
                             dataOutputStream.writeUTF(">> ["+nome+"] às "+sdf+" : "+ mensagem);
                         }else{
                             dataOutputStream.writeUTF("["+nome+"] às "+sdf+" : "+ mensagem);
