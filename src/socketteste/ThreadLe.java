@@ -30,10 +30,10 @@ public class ThreadLe extends Thread {
         do{
             try {
                 msg = dIn.readUTF();
-                if (!msg.contains("@>")){
+                if (!msg.contains("send -user")){
                     System.out.println(msg);
                 }else{
-                    if(msg.contains("@>"+nome)){
+                    if(msg.contains("send -user "+nome)){
                         System.out.println(msg);
                     }
                 }

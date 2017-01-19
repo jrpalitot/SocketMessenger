@@ -52,9 +52,9 @@ public class SocketTeste extends Thread{
                         mensagem = enviar_mensagem.nextLine();
                         sdf = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
                         if (mensagem.startsWith("@>")){
-                            dataOutputStream.writeUTF(">> ["+nome+"] às "+sdf.format(data_atual.getTime())+" : "+ mensagem);
+                            dataOutputStream.writeUTF("/~"+nome+": " + mensagem + " - "+sdf.format(data_atual.getTime()));
                         }else{
-                            dataOutputStream.writeUTF("["+nome+"] às "+sdf.format(data_atual.getTime())+" : "+ mensagem);
+                            dataOutputStream.writeUTF("/~"+nome+": " + mensagem + " - "+sdf.format(data_atual.getTime()));
                         }
                     } while(true);
                     
@@ -72,10 +72,10 @@ public class SocketTeste extends Thread{
                         data_atual = Calendar.getInstance();
                         mensagem = enviar_mensagem.nextLine();
                         sdf = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
-                        if (mensagem.startsWith("@>")){
-                            dataOutputStream.writeUTF(">> ["+nome+"] às "+sdf.format(data_atual.getTime())+" : "+ mensagem);
+                        if (mensagem.startsWith("send -user ")){
+                            dataOutputStream.writeUTF("//~"+nome+": " + mensagem + " - "+sdf.format(data_atual.getTime()));
                         }else{
-                            dataOutputStream.writeUTF("["+nome+"] às "+sdf.format(data_atual.getTime())+" : "+ mensagem);
+                            dataOutputStream.writeUTF("/~"+nome+": " + mensagem + " - "+sdf.format(data_atual.getTime()));
                         }
                     } while(true);
                     
