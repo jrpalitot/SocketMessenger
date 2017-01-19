@@ -34,6 +34,7 @@ public class SocketTeste extends Thread{
         
         System.out.println("Qual seu nome? ");
         nome = enviar_mensagem.nextLine();
+        lista.add(nome);
         System.out.println("--------------------------------");
         System.out.println("Você deseja: \n 1 - Entrar numa sala existente \n 2 - Criar uma sala ");
         opcao = enviar_mensagem.nextLine();
@@ -49,9 +50,8 @@ public class SocketTeste extends Thread{
                     ThreadLe tLe = new ThreadLe(socket.getInputStream(), nome, lista);
                     tLe.start();
                     dataOutputStream = new DataOutputStream(socket.getOutputStream());
-                    dataOutputStream.writeUTF(nome + "Entrou na conversa");
+                    dataOutputStream.writeUTF(nome + " Entrou na conversa");
                     
-                    lista.add(nome);
                    do{
                         data_atual = Calendar.getInstance();
                         mensagem = enviar_mensagem.nextLine();
@@ -78,7 +78,6 @@ public class SocketTeste extends Thread{
                     tLe.start();
                     dataOutputStream = new DataOutputStream(socket.getOutputStream());
                     
-                    lista.add(nome);
                     do{
                         data_atual = Calendar.getInstance();
                         mensagem = enviar_mensagem.nextLine();
@@ -89,9 +88,6 @@ public class SocketTeste extends Thread{
                             dataOutputStream.writeUTF(nome+" saiu da conversa.");
                             socket.close();
                             System.exit(0);
-                        }else if (mensagem.startsWith("list")){
-                            System.out.println(lista.toString());
-                            dataOutputStream.writeUTF(lista.toString());
                         }else{
                             dataOutputStream.writeUTF("/~"+nome+": " + mensagem + " - "+sdf.format(data_atual.getTime()));
                         }
