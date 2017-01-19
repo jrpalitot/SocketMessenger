@@ -12,6 +12,6 @@ import java.util.ArrayList;
  * @author jrpalitot
  */
 public class globals {
-   public static ArrayList<String> lista ;
+   public static ArrayList<String> lista = new ArrayList<>();
    ///
 }
