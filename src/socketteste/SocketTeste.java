@@ -23,7 +23,6 @@ public class SocketTeste extends Thread{
     public static void main(String[] args) throws IOException  {
         SimpleDateFormat sdf;
         Scanner enviar_mensagem = new Scanner (System.in);
-        String nome;
         String opcao;
         String mensagem;
         DataOutputStream dataOutputStream;
@@ -31,8 +30,8 @@ public class SocketTeste extends Thread{
         
         
         System.out.println("Qual seu nome? ");
-        nome = enviar_mensagem.nextLine();
-        globals.lista.add(nome);
+        globals.nome = enviar_mensagem.nextLine();
+        globals.lista.add(globals.nome);
         System.out.println("--------------------------------");
         System.out.println("Você deseja: \n 1 - Entrar numa sala existente \n 2 - Criar uma sala ");
         opcao = enviar_mensagem.nextLine();
@@ -45,25 +44,30 @@ public class SocketTeste extends Thread{
                     System.out.println("Qual IP da sala que deseja conectar?");
                     mensagem = enviar_mensagem.nextLine();
                     Socket socket = new Socket(InetAddress.getByName(mensagem), 6500);
-                    ThreadLe tLe = new ThreadLe(socket.getInputStream(), nome);
+                    ThreadLe tLe = new ThreadLe(socket.getInputStream());
                     tLe.start();
                     dataOutputStream = new DataOutputStream(socket.getOutputStream());
-                    dataOutputStream.writeUTF(nome + " entrou na conversa");
+                    dataOutputStream.writeUTF(globals.nome + " entrou na conversa");
                     
                    do{
                         data_atual = Calendar.getInstance();
                         mensagem = enviar_mensagem.nextLine();
                         sdf = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
                         if (mensagem.startsWith("send -user ")){
-                            dataOutputStream.writeUTF("//~"+nome+": " + mensagem + " - "+sdf.format(data_atual.getTime()));
+                            dataOutputStream.writeUTF("//~"+globals.nome+": " + mensagem + " - "+sdf.format(data_atual.getTime()));
                         }else if (mensagem.startsWith("bye")){
-                            dataOutputStream.writeUTF(nome+" saiu da conversa.");
+                            dataOutputStream.writeUTF(globals.nome+" saiu da conversa.");
                             socket.close();
                             System.exit(0);
                         }else if (mensagem.startsWith("list")){
                             System.out.println(globals.lista.toString());
+                        }else if (mensagem.startsWith("rename")){
+                            dataOutputStream.writeUTF(globals.nome+" alterado para " + mensagem.split(" ")[1]);
+                            globals.lista.remove(globals.nome);
+                            globals.nome = mensagem.split(" ")[1];
+                            globals.lista.add(globals.nome);
                         }else{
-                            dataOutputStream.writeUTF("/~"+nome+": " + mensagem + " - "+sdf.format(data_atual.getTime()));
+                            dataOutputStream.writeUTF("/~"+globals.nome+": " + mensagem + " - "+sdf.format(data_atual.getTime()));
                         }
                     } while(true);
                     
@@ -74,25 +78,25 @@ public class SocketTeste extends Thread{
                     System.out.println("Sala criada! \n----------------------- \n");
                     ServerSocket serverSocket = new ServerSocket(6500);
                     Socket socket = serverSocket.accept();
-                    ThreadLe tLe = new ThreadLe(socket.getInputStream(), nome);
+                    ThreadLe tLe = new ThreadLe(socket.getInputStream());
                     tLe.start();
                     dataOutputStream = new DataOutputStream(socket.getOutputStream());
-                    dataOutputStream.writeUTF(nome + " entrou na conversa");
+                    dataOutputStream.writeUTF(globals.nome + " entrou na conversa");
                     
                     do{
                         data_atual = Calendar.getInstance();
                         mensagem = enviar_mensagem.nextLine();
                         sdf = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
                         if (mensagem.startsWith("send -user ")){
-                            dataOutputStream.writeUTF("//~"+nome+": " + mensagem + " - "+sdf.format(data_atual.getTime()));
+                            dataOutputStream.writeUTF("//~"+globals.nome+": " + mensagem + " - "+sdf.format(data_atual.getTime()));
                         }else if (mensagem.startsWith("bye")){
-                            dataOutputStream.writeUTF(nome+" saiu da conversa.");
+                            dataOutputStream.writeUTF(globals.nome+" saiu da conversa.");
                             socket.close();
                             System.exit(0);
                         }else if (mensagem.startsWith("list")){
                             System.out.println(globals.lista.toString());
                         }else{
-                            dataOutputStream.writeUTF("/~"+nome+": " + mensagem + " - "+sdf.format(data_atual.getTime()));
+                            dataOutputStream.writeUTF("/~"+globals.nome+": " + mensagem + " - "+sdf.format(data_atual.getTime()));
                         }
                     } while(true);
                     

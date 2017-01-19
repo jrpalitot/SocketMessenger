@@ -17,11 +17,9 @@ import java.util.logging.Logger;
  */
 public class ThreadLe extends Thread {
     private InputStream  in;
-    private String nome;
     
-    public ThreadLe(InputStream in, String nome){
+    public ThreadLe(InputStream in){
         this.in = in;
-        this.nome = nome;
     }
     @Override
     public void run(){
@@ -30,14 +28,17 @@ public class ThreadLe extends Thread {
         do{
             try {
                 msg = dIn.readUTF();
-                if (msg.contains("entrou na conversa")){
+                if (msg.contains("entrou na conversa") && !msg.contains("/~")){
                     globals.lista.add(msg.split(" ")[0]);
-                    System.out.println(msg.split(" ")[0]);
+                    System.out.println(msg);
+                }else if (msg.contains("alterado para")){
+                    globals.lista.remove(msg.split(" ")[0]);
+                    globals.lista.add(msg.split(" ")[3]);
                     System.out.println(msg);
                 }else if (!msg.contains("send -user")){
                     System.out.println(msg);
                 }else {
-                    if(msg.contains("send -user "+nome)){
+                    if(msg.contains("send -user "+globals.nome)){
                         System.out.println("PRIVADO" + msg);
                     }
                 }

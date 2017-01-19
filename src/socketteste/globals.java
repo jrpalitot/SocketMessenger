@@ -13,5 +13,6 @@ import java.util.ArrayList;
  */
 public class globals {
    public static ArrayList<String> lista = new ArrayList<>();
+   public static String nome;
    ///
 }
