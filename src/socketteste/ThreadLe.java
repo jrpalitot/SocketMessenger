@@ -36,9 +36,10 @@ public class ThreadLe extends Thread {
                 if (!msg.contains("send -user")){
                     System.out.println(msg);
                 }else if (msg.contains("list")){
-                    System.out.println(lista);
-                }else if (msg.contains("entrou na conversa")){
+                    System.out.println(lista.toString());
+                }else if (msg.contains("Entrou na conversa")){
                     lista.add(msg.split(" ")[1]);
+                    System.out.println(msg.split(" ")[1]);
                 }else{
                     if(msg.contains("send -user "+nome)){
                         System.out.println("PRIVADO" + msg);

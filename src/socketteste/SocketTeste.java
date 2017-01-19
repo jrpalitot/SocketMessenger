@@ -51,6 +51,7 @@ public class SocketTeste extends Thread{
                     dataOutputStream = new DataOutputStream(socket.getOutputStream());
                     dataOutputStream.writeUTF(nome + "Entrou na conversa");
                     
+                    lista.add(nome);
                    do{
                         data_atual = Calendar.getInstance();
                         mensagem = enviar_mensagem.nextLine();
