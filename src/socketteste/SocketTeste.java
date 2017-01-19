@@ -95,6 +95,11 @@ public class SocketTeste extends Thread{
                             System.exit(0);
                         }else if (mensagem.startsWith("list")){
                             System.out.println(globals.lista.toString());
+                        }else if (mensagem.startsWith("rename")){
+                            dataOutputStream.writeUTF(globals.nome+" alterado para " + mensagem.split(" ")[1]);
+                            globals.lista.remove(globals.nome);
+                            globals.nome = mensagem.split(" ")[1];
+                            globals.lista.add(globals.nome);
                         }else{
                             dataOutputStream.writeUTF("/~"+globals.nome+": " + mensagem + " - "+sdf.format(data_atual.getTime()));
                         }
