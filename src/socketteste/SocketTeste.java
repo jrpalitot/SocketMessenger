@@ -61,7 +61,6 @@ public class SocketTeste extends Thread{
                             socket.close();
                             System.exit(0);
                         }else if (mensagem.startsWith("list")){
-                            dataOutputStream.writeUTF(globals.lista.toString());
                             System.out.println(globals.lista.toString());
                         }else{
                             dataOutputStream.writeUTF("/~"+nome+": " + mensagem + " - "+sdf.format(data_atual.getTime()));
@@ -78,6 +77,7 @@ public class SocketTeste extends Thread{
                     ThreadLe tLe = new ThreadLe(socket.getInputStream(), nome);
                     tLe.start();
                     dataOutputStream = new DataOutputStream(socket.getOutputStream());
+                    dataOutputStream.writeUTF(nome + " Entrou na conversa");
                     
                     do{
                         data_atual = Calendar.getInstance();
@@ -89,6 +89,8 @@ public class SocketTeste extends Thread{
                             dataOutputStream.writeUTF(nome+" saiu da conversa.");
                             socket.close();
                             System.exit(0);
+                        }else if (mensagem.startsWith("list")){
+                            System.out.println(globals.lista.toString());
                         }else{
                             dataOutputStream.writeUTF("/~"+nome+": " + mensagem + " - "+sdf.format(data_atual.getTime()));
                         }
