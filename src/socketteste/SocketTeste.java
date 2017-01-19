@@ -48,7 +48,7 @@ public class SocketTeste extends Thread{
                     ThreadLe tLe = new ThreadLe(socket.getInputStream(), nome);
                     tLe.start();
                     dataOutputStream = new DataOutputStream(socket.getOutputStream());
-                    dataOutputStream.writeUTF(nome + " Entrou na conversa");
+                    dataOutputStream.writeUTF(nome + " entrou na conversa");
                     
                    do{
                         data_atual = Calendar.getInstance();
@@ -77,7 +77,7 @@ public class SocketTeste extends Thread{
                     ThreadLe tLe = new ThreadLe(socket.getInputStream(), nome);
                     tLe.start();
                     dataOutputStream = new DataOutputStream(socket.getOutputStream());
-                    dataOutputStream.writeUTF(nome + " Entrou na conversa");
+                    dataOutputStream.writeUTF(nome + " entrou na conversa");
                     
                     do{
                         data_atual = Calendar.getInstance();
