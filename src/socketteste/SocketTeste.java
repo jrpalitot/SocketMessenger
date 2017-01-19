@@ -51,8 +51,12 @@ public class SocketTeste extends Thread{
                         data_atual = Calendar.getInstance();
                         mensagem = enviar_mensagem.nextLine();
                         sdf = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
-                        if (mensagem.startsWith("@>")){
-                            dataOutputStream.writeUTF("/~"+nome+": " + mensagem + " - "+sdf.format(data_atual.getTime()));
+                        if (mensagem.startsWith("send -user ")){
+                            dataOutputStream.writeUTF("//~"+nome+": " + mensagem + " - "+sdf.format(data_atual.getTime()));
+                        }else if (mensagem.startsWith("bye")){
+                            dataOutputStream.writeUTF(nome+" saiu da conversa.");
+                            socket.close();
+                            System.exit(0);
                         }else{
                             dataOutputStream.writeUTF("/~"+nome+": " + mensagem + " - "+sdf.format(data_atual.getTime()));
                         }
@@ -75,7 +79,9 @@ public class SocketTeste extends Thread{
                         if (mensagem.startsWith("send -user ")){
                             dataOutputStream.writeUTF("//~"+nome+": " + mensagem + " - "+sdf.format(data_atual.getTime()));
                         }else if (mensagem.startsWith("bye")){
-                            dataOutputStream.writeUTF("/~"+nome+" saiu da conversa.");
+                            dataOutputStream.writeUTF(nome+" saiu da conversa.");
+                            socket.close();
+                            System.exit(0);
                         }else{
                             dataOutputStream.writeUTF("/~"+nome+": " + mensagem + " - "+sdf.format(data_atual.getTime()));
                         }
