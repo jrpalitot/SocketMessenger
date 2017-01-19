@@ -34,7 +34,7 @@ public class ThreadLe extends Thread {
                     System.out.println(msg);
                 }else{
                     if(msg.contains("send -user "+nome)){
-                        System.out.println(msg);
+                        System.out.println("PRIVADO: " + msg);
                     }
                 }
             } catch (IOException ex) {
