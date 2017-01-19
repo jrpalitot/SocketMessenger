@@ -8,6 +8,7 @@ package socketteste;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -18,10 +19,12 @@ import java.util.logging.Logger;
 public class ThreadLe extends Thread {
     private InputStream  in;
     private String nome;
+    private ArrayList<String> lista;
     
-    public ThreadLe(InputStream in, String nome){
+    public ThreadLe(InputStream in, String nome, ArrayList<String> lista){
         this.in = in;
         this.nome = nome;
+        this.lista = lista;
     }
     @Override
     public void run(){
@@ -32,6 +35,8 @@ public class ThreadLe extends Thread {
                 msg = dIn.readUTF();
                 if (!msg.contains("send -user")){
                     System.out.println(msg);
+                }else if (msg.contains("list")){
+                    System.out.println(lista);
                 }else{
                     if(msg.contains("send -user "+nome)){
                         System.out.println("PRIVADO" + msg);

@@ -10,6 +10,7 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 import java.util.Scanner;
@@ -29,6 +30,8 @@ public class SocketTeste extends Thread{
         DataOutputStream dataOutputStream;
         Calendar data_atual;
         
+        ArrayList<String> lista  = new ArrayList<>();
+        
         System.out.println("Qual seu nome? ");
         nome = enviar_mensagem.nextLine();
         System.out.println("--------------------------------");
@@ -43,9 +46,10 @@ public class SocketTeste extends Thread{
                     System.out.println("Qual IP da sala que deseja conectar?");
                     mensagem = enviar_mensagem.nextLine();
                     Socket socket = new Socket(InetAddress.getByName(mensagem), 6500);
-                    ThreadLe tLe = new ThreadLe(socket.getInputStream(), nome);
+                    ThreadLe tLe = new ThreadLe(socket.getInputStream(), nome, lista);
                     tLe.start();
                     dataOutputStream = new DataOutputStream(socket.getOutputStream());
+                    dataOutputStream.writeUTF(nome + "Entrou na conversa");
                     
                    do{
                         data_atual = Calendar.getInstance();
@@ -66,12 +70,14 @@ public class SocketTeste extends Thread{
                 }
             case "2":
                 {
-                    System.out.println("Criando sala... \nSala criada! \n\n-----------------------");
+                    System.out.println("Sala criada! \n----------------------- \n");
                     ServerSocket serverSocket = new ServerSocket(6500);
                     Socket socket = serverSocket.accept();
-                    ThreadLe tLe = new ThreadLe(socket.getInputStream(), nome);
+                    ThreadLe tLe = new ThreadLe(socket.getInputStream(), nome, lista);
                     tLe.start();
                     dataOutputStream = new DataOutputStream(socket.getOutputStream());
+                    
+                    lista.add(nome);
                     do{
                         data_atual = Calendar.getInstance();
                         mensagem = enviar_mensagem.nextLine();
@@ -82,6 +88,9 @@ public class SocketTeste extends Thread{
                             dataOutputStream.writeUTF(nome+" saiu da conversa.");
                             socket.close();
                             System.exit(0);
+                        }else if (mensagem.startsWith("list")){
+                            System.out.println(lista.toString());
+                            dataOutputStream.writeUTF(lista.toString());
                         }else{
                             dataOutputStream.writeUTF("/~"+nome+": " + mensagem + " - "+sdf.format(data_atual.getTime()));
                         }
