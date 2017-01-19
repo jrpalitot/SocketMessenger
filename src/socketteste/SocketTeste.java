@@ -10,7 +10,6 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 import java.util.Scanner;
@@ -30,11 +29,10 @@ public class SocketTeste extends Thread{
         DataOutputStream dataOutputStream;
         Calendar data_atual;
         
-        ArrayList<String> lista  = new ArrayList<>();
         
         System.out.println("Qual seu nome? ");
         nome = enviar_mensagem.nextLine();
-        lista.add(nome);
+        globals.lista.add(nome);
         System.out.println("--------------------------------");
         System.out.println("Você deseja: \n 1 - Entrar numa sala existente \n 2 - Criar uma sala ");
         opcao = enviar_mensagem.nextLine();
@@ -47,7 +45,7 @@ public class SocketTeste extends Thread{
                     System.out.println("Qual IP da sala que deseja conectar?");
                     mensagem = enviar_mensagem.nextLine();
                     Socket socket = new Socket(InetAddress.getByName(mensagem), 6500);
-                    ThreadLe tLe = new ThreadLe(socket.getInputStream(), nome, lista);
+                    ThreadLe tLe = new ThreadLe(socket.getInputStream(), nome);
                     tLe.start();
                     dataOutputStream = new DataOutputStream(socket.getOutputStream());
                     dataOutputStream.writeUTF(nome + " Entrou na conversa");
@@ -62,6 +60,9 @@ public class SocketTeste extends Thread{
                             dataOutputStream.writeUTF(nome+" saiu da conversa.");
                             socket.close();
                             System.exit(0);
+                        }else if (mensagem.startsWith("list")){
+                            dataOutputStream.writeUTF(globals.lista.toString());
+                            System.out.println(globals.lista.toString());
                         }else{
                             dataOutputStream.writeUTF("/~"+nome+": " + mensagem + " - "+sdf.format(data_atual.getTime()));
                         }
@@ -74,7 +75,7 @@ public class SocketTeste extends Thread{
                     System.out.println("Sala criada! \n----------------------- \n");
                     ServerSocket serverSocket = new ServerSocket(6500);
                     Socket socket = serverSocket.accept();
-                    ThreadLe tLe = new ThreadLe(socket.getInputStream(), nome, lista);
+                    ThreadLe tLe = new ThreadLe(socket.getInputStream(), nome);
                     tLe.start();
                     dataOutputStream = new DataOutputStream(socket.getOutputStream());
                     
