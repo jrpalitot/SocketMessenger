@@ -40,7 +40,7 @@ public class ThreadLe extends Thread {
             } catch (IOException ex) {
                 Logger.getLogger(ThreadLe.class.getName()).log(Level.SEVERE, null, ex);
             }
-        }while(!msg.equals("fim"));
+        }while(!msg.equals("bye"));
     }
     
 }
