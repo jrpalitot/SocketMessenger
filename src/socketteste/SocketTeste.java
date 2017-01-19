@@ -74,6 +74,8 @@ public class SocketTeste extends Thread{
                         sdf = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
                         if (mensagem.startsWith("send -user ")){
                             dataOutputStream.writeUTF("//~"+nome+": " + mensagem + " - "+sdf.format(data_atual.getTime()));
+                        }else if (mensagem.startsWith("bye")){
+                            dataOutputStream.writeUTF("/~"+nome+" saiu da conversa.");
                         }else{
                             dataOutputStream.writeUTF("/~"+nome+": " + mensagem + " - "+sdf.format(data_atual.getTime()));
                         }
